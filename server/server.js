@@ -14,24 +14,18 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
 
-// Allow multiple origins for development and production
-const allowedOrigins = [
-  "http://localhost:5173", // Local development
-  "http://localhost:3000", // Alternative local port
-  process.env.CLIENT_URL, // Production URL from .env
-];
-
+// CORS Configuration - Allow both development and production URLs
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: [
+      "http://localhost:5173", // Local development
+      "http://localhost:3000", // Alternative local port
+      "https://online-learning-platform-one-tawny.vercel.app", // Production frontend
+      process.env.CLIENT_URL, // From environment variable
+    ],
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true, // Allow cookies if needed
   })
 );
 
