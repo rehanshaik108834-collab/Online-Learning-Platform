@@ -68,10 +68,15 @@ function StudentHomePage() {
             Master new skills for your present and your future. Join our premium learning platform today.
           </p>
           <div className="flex gap-4">
-            <Button className="rounded-full px-8 h-12 bg-gray-900 hover:bg-gray-800 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <Button 
+              onClick={() => navigate("/student-courses")}
+              className="rounded-full px-8 h-12 bg-gray-900 hover:bg-gray-800 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               Start Learning
             </Button>
-            <Button variant="outline" className="rounded-full px-8 h-12 border-gray-200 bg-white hover:bg-gray-50 text-gray-700 shadow-sm transition-all duration-300">
+            <Button 
+              onClick={() => navigate("/courses")}
+              variant="outline" 
+              className="rounded-full px-8 h-12 border-gray-200 bg-white hover:bg-gray-50 text-gray-700 shadow-sm transition-all duration-300">
               Browse Paths
             </Button>
           </div>
