@@ -30,6 +30,15 @@ mongoose
   .then(() => console.log("mongodb is connected"))
   .catch((e) => console.log(e));
 
+//health check endpoint
+app.get("/health", (req, res) => {
+  res.json({
+    success: true,
+    message: "Server is running",
+    timestamp: new Date().toISOString(),
+  });
+});
+
 //routes configuration
 app.use("/auth", authRoutes);
 app.use("/media", mediaRoutes);
