@@ -257,21 +257,4 @@ npm run build    # Build for production
 npm run lint     # Run ESLint
 npm run preview  # Preview production build
 ```
-
-## 🤝 Contributing
-
-This is a personal learning management system project. Feel free to extend and modify based on your needs.
-
-## 👤 Author
-
-**Shaik Rehan**
-- Email: rehanshaik3106@gmail.com
-- GitHub: [GitHub Profile]
-
-## 📄 License
-
-ISC
-
----
-
 **Happy Learning! 🎓**
