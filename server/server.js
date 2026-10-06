@@ -2,6 +2,8 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const morgan = require("morgan");
+const logger = require("./helpers/logger");
 const authRoutes = require("./routes/auth-routes/index");
 const mediaRoutes = require("./routes/instructor-routes/media-routes");
 const instructorCourseRoutes = require("./routes/instructor-routes/course-routes");
@@ -30,12 +32,13 @@ app.use(
 );
 
 app.use(express.json());
+app.use(morgan("dev"));
 
 //database connection
 mongoose
   .connect(MONGO_URI)
-  .then(() => console.log("mongodb is connected"))
-  .catch((e) => console.log(e));
+  .then(() => logger.info("mongodb is connected"))
+  .catch((e) => logger.error(e));
 
 //health check endpoint
 app.get("/health", (req, res) => {
@@ -56,7 +59,7 @@ app.use("/student/courses-bought", studentCoursesRoutes);
 app.use("/student/course-progress", studentCourseProgressRoutes);
 
 app.use((err, req, res, next) => {
-  console.log(err.stack);
+  logger.error(err.stack);
   res.status(500).json({
     success: false,
     message: "Something went wrong",
@@ -64,5 +67,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is now running on port ${PORT}`);
+  logger.info(`Server is now running on port ${PORT}`);
 });

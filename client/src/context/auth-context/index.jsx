@@ -2,6 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { initialSignInFormData, initialSignUpFormData } from "@/config";
 import { checkAuthService, loginService, registerService } from "@/services";
 import { createContext, useEffect, useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 export const AuthContext = createContext(null);
 
@@ -13,46 +14,64 @@ export default function AuthProvider({ children }) {
     user: null,
   });
   const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
   async function handleRegisterUser(event) {
     event.preventDefault();
-    const data = await registerService(signUpFormData);
-    
-    if (data.success) {
-      // Auto-login the user after successful signup
-      const loginData = await loginService({
-        userEmail: signUpFormData.userEmail,
-        password: signUpFormData.password
-      });
+    try {
+      const data = await registerService(signUpFormData);
       
-      if (loginData.success) {
-        sessionStorage.setItem(
-          "accessToken",
-          JSON.stringify(loginData.data.accessToken)
-        );
-        setAuth({
-          authenticate: true,
-          user: loginData.data.user,
+      if (data.success) {
+        toast({ title: "Success", description: data.message || "User registered successfully!" });
+        // Auto-login the user after successful signup
+        const loginData = await loginService({
+          userEmail: signUpFormData.userEmail,
+          password: signUpFormData.password
         });
+        
+        if (loginData.success) {
+          sessionStorage.setItem(
+            "accessToken",
+            JSON.stringify(loginData.data.accessToken)
+          );
+          setAuth({
+            authenticate: true,
+            user: loginData.data.user,
+          });
+        }
+      } else {
+        toast({ title: "Error", description: data.message || "Registration failed", variant: "destructive" });
       }
+    } catch (error) {
+      toast({ title: "Error", description: error?.response?.data?.message || "Registration failed", variant: "destructive" });
     }
   }
 
   async function handleLoginUser(event) {
     event.preventDefault();
-    const data = await loginService(signInFormData);
-    console.log(data, "datadatadatadatadata");
+    try {
+      const data = await loginService(signInFormData);
+      console.log(data, "datadatadatadatadata");
 
-    if (data.success) {
-      sessionStorage.setItem(
-        "accessToken",
-        JSON.stringify(data.data.accessToken)
-      );
-      setAuth({
-        authenticate: true,
-        user: data.data.user,
-      });
-    } else {
+      if (data.success) {
+        toast({ title: "Success", description: data.message || "Logged in successfully" });
+        sessionStorage.setItem(
+          "accessToken",
+          JSON.stringify(data.data.accessToken)
+        );
+        setAuth({
+          authenticate: true,
+          user: data.data.user,
+        });
+      } else {
+        toast({ title: "Error", description: data.message || "Login failed", variant: "destructive" });
+        setAuth({
+          authenticate: false,
+          user: null,
+        });
+      }
+    } catch (error) {
+      toast({ title: "Error", description: error?.response?.data?.message || "Login failed", variant: "destructive" });
       setAuth({
         authenticate: false,
         user: null,

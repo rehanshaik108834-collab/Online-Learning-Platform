@@ -1,4 +1,5 @@
 const Course = require("../../models/Course");
+const logger = require("../../helpers/logger");
 
 const addNewCourse = async (req, res) => {
   try {
@@ -14,7 +15,7 @@ const addNewCourse = async (req, res) => {
       });
     }
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(500).json({
       success: false,
       message: "Some error occured!",
@@ -24,14 +25,14 @@ const addNewCourse = async (req, res) => {
 
 const getAllCourses = async (req, res) => {
   try {
-    const coursesList = await Course.find({});
+    const coursesList = await Course.find({ instructorId: req.user._id });
 
     res.status(200).json({
       success: true,
       data: coursesList,
     });
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(500).json({
       success: false,
       message: "Some error occured!",
@@ -56,7 +57,7 @@ const getCourseDetailsByID = async (req, res) => {
       data: courseDetails,
     });
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(500).json({
       success: false,
       message: "Some error occured!",
@@ -88,7 +89,7 @@ const updateCourseByID = async (req, res) => {
       data: updatedCourse,
     });
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(500).json({
       success: false,
       message: "Some error occured!",

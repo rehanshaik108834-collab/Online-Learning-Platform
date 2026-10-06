@@ -8,7 +8,12 @@
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
-  "keywords": ["lms", "education", "courses", "learning-management"],
+  "keywords": [
+    "lms",
+    "education",
+    "courses",
+    "learning-management"
+  ],
   "author": "Shaik Rehan <rehanshaik3106@gmail.com>",
   "license": "ISC",
   "devDependencies": {
@@ -22,6 +27,8 @@
     "express": "^4.21.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.6.3",
-    "multer": "^1.4.5-lts.1"
+    "morgan": "^1.12.1",
+    "multer": "^1.4.5-lts.1",
+    "winston": "^3.19.0"
   }
 }
