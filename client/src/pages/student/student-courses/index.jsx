@@ -16,9 +16,10 @@ function StudentCoursesPage() {
   async function fetchStudentBoughtCourses() {
     const response = await fetchStudentBoughtCoursesService(auth?.user?._id);
     if (response?.success) {
-      setStudentBoughtCoursesList(response?.data);
+      setStudentBoughtCoursesList(response?.data || []);
+    } else {
+      setStudentBoughtCoursesList([]);
     }
-    console.log(response);
   }
   useEffect(() => {
     fetchStudentBoughtCourses();
